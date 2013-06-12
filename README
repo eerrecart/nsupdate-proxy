@@ -1,4 +1,3 @@
-
 A nsupdate proxy written in JavaScript (nodeJS)
 -----------------------------------------------
 
@@ -10,6 +9,14 @@ Usage:
 
 Requests:
 
-  curl -i -X POST http://localhost:8888/?key=name-of-key:base64-encoded-secret -d "commands for nsupdate\none per line\n"
+  curl https://localhost:8888/?key=example-name:SNgV%2BzrwDgPNp4yN0/u/ntLffT6HTX2P1GjMe6TyipyPMKyWGITGXoKhF33SCeViA4TKSaQSBfSec1JHl5YwVAQ== \
+    -i \
+    -X POST \
+    -d "server ns.un.ht.
+        zone example-name.un.ht.
+        update add example-name.un.ht. 10 ns 127.0.0.0
+        send
+       "
+remember the key must be URI encoded
 
 See the nsupdate manpage for details on the commands: http://linux.die.net/man/8/nsupdate
