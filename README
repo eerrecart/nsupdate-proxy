@@ -7,9 +7,10 @@ Usage:
   * Start "./nsupdate-proxy.js"
   * Done :)
 
-Requests:
+Example request:
 
-  curl https://localhost:8888/?key=example-name:SNgV%2BzrwDgPNp4yN0/u/ntLffT6HTX2P1GjMe6TyipyPMKyWGITGXoKhF33SCeViA4TKSaQSBfSec1JHl5YwVAQ== \
+  KEY="SNgV%2BzrwDgPNp4yN0/u/ntLffT6HTX2P1GjMe6TyipyPMKyWGITGXoKhF33SCeViA4TKSaQSBfSec1JHl5YwVAQ=="
+  curl https://localhost:8888/?key=example-name:$KEY \
     -i \
     -X POST \
     -d "server ns.un.ht.
@@ -17,6 +18,7 @@ Requests:
         update add example-name.un.ht. 10 ns 127.0.0.0
         send
        "
-remember the key must be URI encoded
+       
+Remember the key must be URI encoded.
 
 See the nsupdate manpage for details on the commands: http://linux.die.net/man/8/nsupdate
