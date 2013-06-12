@@ -1,0 +1,15 @@
+
+A nsupdate proxy written in JavaScript (nodeJS)
+-----------------------------------------------
+
+Usage:
+
+  * Edit config.js
+  * Start "./nsupdate-proxy.js"
+  * Done :)
+
+Requests:
+
+  curl -i -X POST http://localhost:8888/?key=name-of-key:base64-encoded-secret -d "commands for nsupdate\none per line\n"
+
+See the nsupdate manpage for details on the commands: http://linux.die.net/man/8/nsupdate
