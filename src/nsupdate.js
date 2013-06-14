@@ -23,6 +23,8 @@ exports.run = function(key, commands, callback) {
     if(status === 0) {
       if(errors.length > 0 && errors.match(/could not/)) {
         callback("Invalid key");
+      } else if(errors.length > 0) {
+        callback("Unknown error");
       } else {
         callback();
       }
