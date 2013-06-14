@@ -15,7 +15,11 @@ module.exports = function(req, res) {
     var query = parsedUrl.query;
     if(! (query && query.key)) {
       console.log("Rejecting (missing \"key\" parameter)");
-      res.writeHead(400, { 'Content-Type': 'text/plain' });
+      res.writeHead(400, {
+        'Content-Type': 'text/plain',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST'
+      });
       res.write("Bad Request:\n");
       res.write("  missing \"key\" parameter\n");
       res.end();
@@ -28,11 +32,19 @@ module.exports = function(req, res) {
         nsupdate.run(query.key, body, function(error) {
           if(error) {
             console.log("Error occured: " + error);
-            res.writeHead(500, { 'Content-Type': 'text/plain' });
+            res.writeHead(500, {
+              'Content-Type': 'text/plain',
+              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Methods': 'POST'
+            });
             res.write("ERROR: " + util.inspect(error) + "\n");
           } else {
             console.log("nsupdate done, success!");
-            res.writeHead(200, { 'Content-Type': 'text/plain' });
+            res.writeHead(200, {
+              'Content-Type': 'text/plain',
+              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Methods': 'POST'
+            });
             res.write("Success!\n");
           }
           res.end();
