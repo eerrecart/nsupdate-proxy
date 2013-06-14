@@ -45,6 +45,12 @@ module.exports = function(req, res) {
       res.write("  invalid \"key\" parameter (must be in the form \"keyname:secret\")\n");
       res.end();
     }
+  } else if(req.method == 'OPTIONS') {
+    res.writeHead(204, {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST'
+    });
+    res.end();
   } else {
     console.log("Rejecting (method not allowed)");
     res.writeHead(405, { 'Content-Type': 'text/plain' });
