@@ -7,6 +7,20 @@ var nsupdate = require('./nsupdate');
 // * accept MIME-style Base64 safe values as 'secret'
 var KEY_RE = /^[a-z0-9\-\.]+\:[a-zA-Z0-9\/\+]+\=?\=?$/;
 
+function extend(a, b) {
+  for(var key in b) {
+    a[key] = b[key];
+  }
+  return a;
+}
+
+var CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST',
+  // we need none of these, but some browsers do
+  'Access-Control-Allow-Headers': 'Authorization,Content-Type,Accept,Origin,User-Agent,DNT,Cache-Control,X-Mx-ReqToken,Keep-Alive,X-Requested-With,If-Modified-Since'
+};
+
 module.exports = function(req, res) {
   console.log("Incoming request: " + req.method + " " + req.url);
   if(req.method === 'POST') {
@@ -15,11 +29,7 @@ module.exports = function(req, res) {
     var query = parsedUrl.query;
     if(! (query && query.key)) {
       console.log("Rejecting (missing \"key\" parameter)");
-      res.writeHead(400, {
-        'Content-Type': 'text/plain',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST'
-      });
+      res.writeHead(400, extend({ 'Content-Type': 'text/plain' }, CORS_HEADERS));
       res.write("Bad Request:\n");
       res.write("  missing \"key\" parameter\n");
       res.end();
@@ -32,19 +42,11 @@ module.exports = function(req, res) {
         nsupdate.run(query.key, body, function(error) {
           if(error) {
             console.log("Error occured: " + error);
-            res.writeHead(500, {
-              'Content-Type': 'text/plain',
-              'Access-Control-Allow-Origin': '*',
-              'Access-Control-Allow-Methods': 'POST'
-            });
+            res.writeHead(500, extend({ 'Content-Type': 'text/plain' }, CORS_HEADERS));
             res.write("ERROR: " + util.inspect(error) + "\n");
           } else {
             console.log("nsupdate done, success!");
-            res.writeHead(200, {
-              'Content-Type': 'text/plain',
-              'Access-Control-Allow-Origin': '*',
-              'Access-Control-Allow-Methods': 'POST'
-            });
+            res.writeHead(200, extend({ 'Content-Type': 'text/plain' }, CORS_HEADERS));
             res.write("Success!\n");
           }
           res.end();
@@ -58,10 +60,7 @@ module.exports = function(req, res) {
       res.end();
     }
   } else if(req.method == 'OPTIONS') {
-    res.writeHead(204, {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST'
-    });
+    res.writeHead(204, CORS_HEADERS);
     res.end();
   } else {
     console.log("Rejecting (method not allowed)");
